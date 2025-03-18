@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Booked" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-gray-50">
+    <!-- Navigation -->
+    <header class="bg-white shadow-md">
+      <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <div>
+          <%= link_to root_path, class: "text-2xl font-bold text-blue-600" do %>
+            <span class="text-3xl">🏠</span> Booked
+          <% end %>
+        </div>
+        
+        <!-- Navigation Links -->
+        <div class="flex items-center space-x-6">
+          <%= link_to "Properties", properties_path, class: "text-gray-600 hover:text-blue-600" %>
+          
+          <% if logged_in? %>
+            <%= link_to "My Bookings", bookings_path, class: "text-gray-600 hover:text-blue-600" %>
+            <%= link_to "My Profile", user_path(current_user), class: "text-gray-600 hover:text-blue-600" %>
+            <%= button_to "Log Out", logout_path, method: :delete, class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md" %>
+          <% else %>
+            <%= link_to "Log In", login_path, class: "text-gray-600 hover:text-blue-600" %>
+            <%= link_to "Sign Up", signup_path, class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md" %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+    
+    <!-- Flash Messages -->
+    <% flash.each do |type, message| %>
+      <div class="flash-message <%= type == 'error' ? 'bg-red-100 border-red-400 text-red-700' : 'bg-green-100 border-green-400 text-green-700' %> border px-4 py-3 rounded relative mt-4 mx-auto container">
+        <span class="block sm:inline"><%= message %></span>
+      </div>
+    <% end %>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-6 px-4">
+      <%= yield %>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10 mt-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-xl font-bold mb-4">Booked</h3>
+            <p class="text-gray-300">Find your perfect stay anywhere in the world.</p>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold mb-4">Links</h3>
+            <ul class="space-y-2">
+              <li><%= link_to "Home", root_path, class: "text-gray-300 hover:text-white" %></li>
+              <li><%= link_to "Properties", properties_path, class: "text-gray-300 hover:text-white" %></li>
+              <% if logged_in? %>
+                <li><%= link_to "My Bookings", bookings_path, class: "text-gray-300 hover:text-white" %></li>
+                <li><%= link_to "My Profile", user_path(current_user), class: "text-gray-300 hover:text-white" %></li>
+              <% else %>
+                <li><%= link_to "Log In", login_path, class: "text-gray-300 hover:text-white" %></li>
+                <li><%= link_to "Sign Up", signup_path, class: "text-gray-300 hover:text-white" %></li>
+              <% end %>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold mb-4">Contact</h3>
+            <p class="text-gray-300">Email: contact@booked.com</p>
+            <p class="text-gray-300">Phone: +1 (555) 123-4567</p>
+          </div>
+        </div>
+        
+        <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+          <p>&copy; <%= Time.current.year %> Booked. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

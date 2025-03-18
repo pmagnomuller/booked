@@ -1,0 +1,58 @@
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6 text-center">Sign Up</h1>
+  
+  <%= form_with model: @user, url: users_path do |f| %>
+    <% if @user.errors.any? %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <h2 class="font-bold mb-2">Error:</h2>
+        <ul class="list-disc list-inside">
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <%= f.label :first_name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.text_field :first_name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true %>
+      </div>
+      
+      <div>
+        <%= f.label :last_name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.text_field :last_name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true %>
+      </div>
+    </div>
+    
+    <div class="mb-4">
+      <%= f.label :email, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.email_field :email, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true %>
+    </div>
+    
+    <div class="mb-4">
+      <%= f.label :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.password_field :password, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true %>
+      <p class="text-gray-600 text-xs mt-1">Minimum 6 characters</p>
+    </div>
+    
+    <div class="mb-6">
+      <%= f.label :password_confirmation, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.password_field :password_confirmation, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", required: true %>
+    </div>
+    
+    <div class="mb-6">
+      <%= f.label :avatar, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.file_field :avatar, class: "w-full text-gray-700", accept: "image/png,image/jpg,image/jpeg" %>
+      <p class="text-gray-600 text-xs mt-1">PNG, JPG or JPEG only (max 2MB)</p>
+    </div>
+    
+    <div class="flex items-center justify-between">
+      <%= f.submit "Sign Up", class: "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full" %>
+    </div>
+  <% end %>
+  
+  <div class="mt-6 text-center">
+    <p class="text-gray-600">Already have an account? <%= link_to "Log in", login_path, class: "text-blue-600 hover:text-blue-800" %></p>
+  </div>
+</div>
